@@ -1,10 +1,10 @@
 import React from "react";
-import { ShopLayout } from "@/components/layouts";
+import { CryptoLayout } from "@/components/layouts";
 import { Box, Typography } from "@mui/material";
 
 const Custom404 = () => {
   return (
-    <ShopLayout
+    <CryptoLayout
       title={"Page not found"}
       pageDescription={"No hay nada que mostrar aquí"}
     >
@@ -25,7 +25,7 @@ const Custom404 = () => {
         </Typography>
         <Typography marginLeft={2}>No encontramos nada aquí</Typography>
       </Box>
-    </ShopLayout>
+    </CryptoLayout>
   );
 };
 

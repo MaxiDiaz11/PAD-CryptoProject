@@ -10,7 +10,6 @@ import {
   Typography,
 } from "@mui/material";
 import NextLink from "next/link";
-import { SearchOutlined, ShoppingCartOutlined } from "@mui/icons-material";
 
 export const NavBar = () => {
   return (
@@ -18,47 +17,33 @@ export const NavBar = () => {
       <Toolbar>
         <NextLink href={"/"} passHref legacyBehavior>
           <Link display={"flex"} alignItems={"center"}>
-            <Typography variant="h6">Teslo |</Typography>
-            <Typography sx={{ ml: 0.5 }}>Shop</Typography>
+            <Typography variant="h6">PAD |</Typography>
+            <Typography sx={{ ml: 0.5 }}>Crypto</Typography>
           </Link>
         </NextLink>
 
         <Box flex={1}></Box>
 
         <Box sx={{ display: { xs: "none", sm: "block" } }}>
-          <NextLink href={"/category/men"} passHref legacyBehavior>
+          <NextLink href={"/cryptocurrencies/myCryptos"} passHref legacyBehavior>
             <Link>
-              <Button>Hombres</Button>
+              <Button>Cryptocurrencies</Button>
             </Link>
           </NextLink>
-          <NextLink href={"/category/women"} passHref legacyBehavior>
+          <NextLink href={"/favorites"} passHref legacyBehavior>
             <Link>
-              <Button>Mujeres</Button>
-            </Link>
-          </NextLink>
-          <NextLink href={"/category/kid"} passHref legacyBehavior>
-            <Link>
-              <Button>Niños</Button>
+              <Button>Favorites</Button>
             </Link>
           </NextLink>
         </Box>
 
         <Box flex={1}></Box>
 
-        <IconButton>
-          <SearchOutlined></SearchOutlined>
-        </IconButton>
-        <NextLink href={"/cart"} passHref legacyBehavior>
+        <NextLink href={"/"} passHref legacyBehavior>
           <Link>
-            <IconButton>
-              <Badge badgeContent={2} color="secondary">
-                <ShoppingCartOutlined></ShoppingCartOutlined>
-              </Badge>
-            </IconButton>
+            <Button>Cerrar sesión</Button>
           </Link>
         </NextLink>
-
-        <Button>Menú</Button>
       </Toolbar>
     </AppBar>
   );
