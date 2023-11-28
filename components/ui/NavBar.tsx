@@ -15,7 +15,7 @@ export const NavBar = () => {
   return (
     <AppBar>
       <Toolbar>
-        <NextLink href={"/"} passHref legacyBehavior>
+        <NextLink href={"/cryptocurrencies"} passHref legacyBehavior>
           <Link display={"flex"} alignItems={"center"}>
             <Typography variant="h6">PAD |</Typography>
             <Typography sx={{ ml: 0.5 }}>Crypto</Typography>
