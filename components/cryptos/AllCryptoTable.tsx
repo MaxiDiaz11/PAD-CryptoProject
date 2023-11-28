@@ -5,7 +5,20 @@ import { formatDate } from "@/utils/util";
 
 export const AllCryptoTable = () => {
   const { getCoins } = useCryptoService();
-  const [dataTable, setDataTable] = useState([]);
+  const [dataTable, setDataTable] = useState<
+    {
+      name: string;
+      symbol: string;
+      quote: {
+        usd: {
+          price: number;
+          percent_change_24h: number;
+          last_updated: string;
+        };
+      };
+      dateAdded: string;
+    }[]
+  >([] as any);
 
   useEffect(() => {
     getCoins().then((response) => setDataTable(response.cryptoCurrencies));
@@ -15,31 +28,40 @@ export const AllCryptoTable = () => {
   const titleTableCoins = [
     "Nombre",
     "Símbolo",
-    "Máximo de suministro",
-    "Fecha de creación",
+    "Precio en USD",
+    "Porcentaje de cambio - 24hs",
+    "Última actualización",
+
+    "Agregar a una lista",
   ];
 
   const createDateCrypto = (
     name: string,
     symbol: string,
-    maxSupply: number,
-    dateAdded: string
+    price: number,
+    percent_change_24h: number,
+    last_updated: string
   ) => {
     return {
       name,
       symbol,
-      maxSupply,
-      dateAdded,
+      price,
+      percent_change_24h,
+      last_updated,
     };
   };
 
   const rowsTable = dataTable.map((crypto) => {
-    const { name, symbol, maxSupply, dateAdded } = crypto;
+    const { name, symbol, dateAdded, quote } = crypto;
+    const { usd } = quote;
+    const { price, percent_change_24h, last_updated } = usd;
+
     return createDateCrypto(
       name,
       symbol,
-      maxSupply,
-      formatDate(new Date(dateAdded))
+      +price.toFixed(2),
+      +percent_change_24h.toFixed(2),
+      formatDate(new Date(last_updated))
     );
   });
 
@@ -48,7 +70,7 @@ export const AllCryptoTable = () => {
       titleTableCoins={titleTableCoins}
       dataTable={rowsTable}
       isFavorite={false}
-      isCustom={false}
+      isCustom={true}
     />
   );
 };

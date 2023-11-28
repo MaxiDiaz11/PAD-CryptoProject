@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CryptoLayout } from "@/components/layouts";
 import { Typography } from "@mui/material";
 import { FavoriteTable } from "@/components/cryptos";
+import { validateUserID } from "@/utils/util";
 
 const FavoritesPage = () => {
+  useEffect(() => {
+    validateUserID();
+  }, []);
+
   return (
     <CryptoLayout
       title={"PAD - Favorites"}

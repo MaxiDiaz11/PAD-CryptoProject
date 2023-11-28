@@ -1,25 +1,34 @@
 import React, { useState, ChangeEvent } from "react";
 import { AuthLayout } from "@/components/layouts";
-import { Box, Button, Grid, Link, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useCryptoService } from "@/services/cryptoService";
 import { INewUser } from "@/interfaces";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
 
 const RegisterPage = () => {
+  const router = useRouter();
   const [user, setUser] = useState<INewUser>({
     name: "",
     email: "",
     password: "",
   });
-
   const [formErrors, setFormErrors] = useState({
     name: false,
     email: false,
     password: false,
   });
-
   const [error, setError] = useState(false);
   const [formError, setFormError] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const { createUser } = useCryptoService();
 
@@ -53,12 +62,17 @@ const RegisterPage = () => {
       setFormError(true);
       return;
     }
-
     setFormError(false);
 
     const response = await createUser(user);
 
-    console.log({ response }); // Continuar con el registro
+    if (response.success) {
+      setSuccess(true);
+      setUser({ name: "", email: "", password: "" });
+      setTimeout(() => {
+        router.push("/");
+      }, 3000);
+    }
   };
 
   return (
@@ -75,6 +89,7 @@ const RegisterPage = () => {
               required
               error={formErrors.name}
               label="Nombre completo"
+              value={user.name}
               variant="filled"
               fullWidth
               onChange={(e) => handleInputChange(e, "name")}
@@ -87,6 +102,7 @@ const RegisterPage = () => {
               label="Correo"
               type="email"
               variant="filled"
+              value={user.email}
               fullWidth
               onChange={(e) => handleInputChange(e, "email")}
             ></TextField>
@@ -95,6 +111,7 @@ const RegisterPage = () => {
             <TextField
               required
               error={formErrors.password}
+              value={user.password}
               label="Contraseña"
               type="password"
               variant="filled"
@@ -124,6 +141,11 @@ const RegisterPage = () => {
             >
               Crear cuenta
             </Button>
+            {success && (
+              <Alert severity="success" sx={{ mt: 4 }}>
+                ¡Usuario creado con éxito!
+              </Alert>
+            )}
           </Grid>
           <Grid item xs={12} display={"flex"} justifyContent={"center"}>
             <NextLink href={"/auth/login"} legacyBehavior passHref>

@@ -30,3 +30,12 @@ export interface Platform {
   slug: any[];
   token_address: any[];
 }
+
+export interface CustomList {
+  id: string;
+  name: string;
+  userId: string;
+  user: null;
+  listItemIds: null;
+  listItems: any[];
+}

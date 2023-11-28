@@ -7,3 +7,11 @@ export const formatDate = (date: Date): string => {
 
   return `${day}/${month}/${year} ${hours}:${minutes}`;
 };
+
+export const validateUserID = () => {
+  const userID = sessionStorage.getItem("userID");
+
+  if (userID === "" || userID === null || userID === undefined) {
+    window.location.href = "/";
+  }
+};

@@ -12,6 +12,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Typography,
   useTheme,
 } from "@mui/material";
 import { PropsTable, TablePaginationActionsProps } from "@/interfaces";
@@ -130,10 +131,21 @@ const CustomPaginationActionsTable: FC<PropsTable> = ({
                 {row.symbol}
               </TableCell>
               <TableCell style={{ width: 160 }} align="center">
-                {row.maxSupply}
+                $ {row.price}
               </TableCell>
               <TableCell style={{ width: 160 }} align="center">
-                {row.dateAdded}
+                {row.percent_change_24h < 0 ? (
+                  <Typography color={"error"}>
+                    {row.percent_change_24h}
+                  </Typography>
+                ) : (
+                  <Typography color="green">
+                    {row.percent_change_24h}
+                  </Typography>
+                )}
+              </TableCell>
+              <TableCell style={{ width: 160 }} align="center">
+                {row.last_updated}
               </TableCell>
 
               {isCustom && (
