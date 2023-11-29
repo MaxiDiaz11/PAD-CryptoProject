@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  Container,
   Grid,
   List,
   ListItemButton,
@@ -9,19 +10,18 @@ import {
 } from "@mui/material";
 import { useCryptoService } from "@/services/cryptoService";
 import { CustomList } from "@/interfaces";
+import { CustomDialog } from "./CustomDialog";
+import { FavoriteTable } from "../cryptos";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 export const CryptoList = () => {
   const [listCoins, setListCoins] = useState<CustomList[]>([] as any);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
-
-  const handleListItemClick = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    index: number,
-    name: string
-  ) => {
-    setSelectedIndex(index);
-    getDataTable(name);
-  };
+  const [openDialog, setOpenDialog] = React.useState(false);
+  const [deleteListDialog, setDeleteListDialog] = React.useState(false);
+  const [listID, setListID] = React.useState("");
+  const [dataTable, setDataTable] = useState<any[] | undefined>([]);
+  const [isListEmpty, setIsListEmpty] = useState(false);
 
   const { getLists } = useCryptoService();
 
@@ -40,42 +40,40 @@ export const CryptoList = () => {
     backgroundColor: theme.palette.background.paper,
   }));
 
-  const titleTableCoins = [
-    "Nombre",
-    "Símbolo",
-    "Máximo de suministro",
-    "Fecha de creación",
-    "Agregar a favoritos",
-  ];
-
-  const createDateCrypto = (
-    name: string,
-    symbol: string,
-    maxSupply: number,
-    dateAdded: string
-  ) => {
+  const createDataCrypto = (name: string, id: string) => {
     return {
       name,
-      symbol,
-      maxSupply,
-      dateAdded,
+      id,
     };
   };
 
   const getDataTable = (name: string) => {
     const data = listCoins.find((list) => list.name === name);
-    return data?.listItems;
+
+    if (!data?.listItems.length) setIsListEmpty(true);
+
+    setDataTable(data?.listItems);
   };
 
-  //   const rowsTable = dataTable.map((crypto) => {
-  //     const { name, symbol, maxSupply, dateAdded } = crypto;
-  //     return createDateCrypto(
-  //       name,
-  //       symbol,
-  //       maxSupply,
-  //       formatDate(new Date(dateAdded))
-  //     );
-  //   });
+  const handleListItemClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    index: number,
+    name: string
+  ) => {
+    setSelectedIndex(index);
+    getDataTable(name);
+  };
+
+  const rowsTable = dataTable!.map((crypto) => {
+    const { name, id } = crypto;
+    return createDataCrypto(name, id);
+  });
+
+  const deleteCustomList = (id: string) => {
+    setDeleteListDialog(true);
+    setOpenDialog(true);
+    setListID(id);
+  };
 
   return (
     <Grid container spacing={2}>
@@ -88,27 +86,56 @@ export const CryptoList = () => {
             {listCoins.map((list) => {
               let contador = 0;
               return (
-                <ListItemButton
-                  selected={selectedIndex === contador++}
-                  onClick={(event) =>
-                    handleListItemClick(event, contador, list.name)
-                  }
+                <Container
+                  sx={{ display: "flex", justifyContent: "space-between" }}
                   key={list.id}
                 >
-                  <ListItemText primary={list.name.toUpperCase()} />
-                </ListItemButton>
+                  <div className="col">
+                    <ListItemButton
+                      selected={selectedIndex === contador++}
+                      onClick={(event) =>
+                        handleListItemClick(event, contador, list.name)
+                      }
+                    >
+                      <ListItemText
+                        primary={list.name.toUpperCase()}
+                        sx={{ textAlign: "center" }}
+                      />
+                    </ListItemButton>
+                  </div>
+                  <div className="col">
+                    <ListItemButton onClick={() => deleteCustomList(list.id)}>
+                      <ListItemText
+                        primary={"Eliminar"}
+                        sx={{ mr: 1, fontWeight: "bold" }}
+                      ></ListItemText>
+                      <HighlightOffIcon />
+                    </ListItemButton>
+                  </div>
+                </Container>
               );
             })}
           </List>
         </Demo>
 
-        {/*TODO: SEE dataTable*/}
-        {/* <CustomPaginationActionsTable
-      titleTableCoins={titleTableCoins}
-      dataTable={rowsTable}
-      isFavorite={false}
-      isCustom={false}
-    /> */}
+        {rowsTable.length !== 0 && <FavoriteTable dataTable={rowsTable} />}
+        {rowsTable.length === 0 && isListEmpty && (
+          <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
+            No hay monedas para mostrar
+          </Typography>
+        )}
+
+        {openDialog && deleteListDialog && (
+          <CustomDialog
+            buttonText={"Eliminar lista"}
+            content={"¿Estás seguro que deseas eliminar esta lista?"}
+            handleClose={() => setOpenDialog(false)}
+            isDeleting={true}
+            listId={listID}
+            open={true}
+            title={"Eliminar lista"}
+          ></CustomDialog>
+        )}
       </Grid>
     </Grid>
   );

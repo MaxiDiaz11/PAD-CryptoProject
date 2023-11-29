@@ -35,11 +35,45 @@ export const useCryptoService = () => {
     return response.data;
   };
 
+  const createItem = async (
+    coinId: string,
+    coinName: string,
+    listId: string
+  ) => {
+    const item = {
+      listId,
+      coinId,
+      coinName,
+    };
+    const response = await cryptoApi.put(
+      basePath + "/List/AddItemsToList",
+      item
+    );
+    return response.data;
+  };
+
+  const deleteList = async (listId: string) => {
+    const response = await cryptoApi.delete(
+      basePath + "/List/DeleteList" + `?ListId=${listId}`
+    );
+    return response.data;
+  };
+
+  const deleteItem = async (itemId: string) => {
+    const response = await cryptoApi.delete(
+      basePath + "/List/DeleteItemToList" + `?Id=${itemId}`
+    );
+    return response.data;
+  };
+
   return {
-    getCoins,
-    createUser,
+    createItem,
     createList,
-    login,
+    createUser,
+    deleteItem,
+    deleteList,
+    getCoins,
     getLists,
+    login,
   };
 };

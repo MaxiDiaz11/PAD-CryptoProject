@@ -9,6 +9,7 @@ export const AllCryptoTable = () => {
     {
       name: string;
       symbol: string;
+      id: number;
       quote: {
         usd: {
           price: number;
@@ -31,7 +32,6 @@ export const AllCryptoTable = () => {
     "Precio en USD",
     "Porcentaje de cambio - 24hs",
     "Última actualización",
-
     "Agregar a una lista",
   ];
 
@@ -40,7 +40,8 @@ export const AllCryptoTable = () => {
     symbol: string,
     price: number,
     percent_change_24h: number,
-    last_updated: string
+    last_updated: string,
+    id: number
   ) => {
     return {
       name,
@@ -48,11 +49,12 @@ export const AllCryptoTable = () => {
       price,
       percent_change_24h,
       last_updated,
+      id,
     };
   };
 
   const rowsTable = dataTable.map((crypto) => {
-    const { name, symbol, dateAdded, quote } = crypto;
+    const { name, symbol, quote, id } = crypto;
     const { usd } = quote;
     const { price, percent_change_24h, last_updated } = usd;
 
@@ -61,7 +63,8 @@ export const AllCryptoTable = () => {
       symbol,
       +price.toFixed(2),
       +percent_change_24h.toFixed(2),
-      formatDate(new Date(last_updated))
+      formatDate(new Date(last_updated)),
+      id
     );
   });
 

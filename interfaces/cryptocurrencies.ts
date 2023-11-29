@@ -39,3 +39,18 @@ export interface CustomList {
   listItemIds: null;
   listItems: any[];
 }
+
+export interface PropsDialog {
+  buttonText: string;
+  content: string;
+  handleClose: () => void;
+  isAdding?: boolean;
+  isDeleting?: boolean;
+  isDeletingItem?: boolean;
+  listId?: string;
+  itemId?: string;
+  listItem?: { coinId: string; coinName: string };
+  open: boolean;
+  title: string;
+  reloadComponent?: () => void;
+}

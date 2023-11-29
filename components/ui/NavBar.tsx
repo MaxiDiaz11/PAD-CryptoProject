@@ -1,14 +1,5 @@
 import React from "react";
-import {
-  AppBar,
-  Badge,
-  Box,
-  Button,
-  IconButton,
-  Link,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { AppBar, Box, Button, Link, Toolbar, Typography } from "@mui/material";
 import NextLink from "next/link";
 
 export const NavBar = () => {
@@ -25,14 +16,13 @@ export const NavBar = () => {
         <Box flex={1}></Box>
 
         <Box sx={{ display: { xs: "none", sm: "block" } }}>
-          <NextLink href={"/cryptocurrencies/myCryptos"} passHref legacyBehavior>
+          <NextLink
+            href={"/cryptocurrencies/myCryptos"}
+            passHref
+            legacyBehavior
+          >
             <Link>
-              <Button>Cryptocurrencies</Button>
-            </Link>
-          </NextLink>
-          <NextLink href={"/favorites"} passHref legacyBehavior>
-            <Link>
-              <Button>Favorites</Button>
+              <Button>Cryptocurrencies lists</Button>
             </Link>
           </NextLink>
         </Box>
